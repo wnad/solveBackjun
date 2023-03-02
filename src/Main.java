@@ -5,10 +5,9 @@ import java.io.IOException;
 public class Main {
     public static void main(String[] args) throws IOException {
 
-        Problem p = new P_11654();
+        Problem p = new P_2743();
 
         p.exec();
-
 
     }
 
