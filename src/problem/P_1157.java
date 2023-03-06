@@ -35,48 +35,62 @@ public class P_1157 implements Problem {
         countAlphabet = createAlphabetArray(inputString);
 
         for (int i=0; i<countAlphabet.length; i++) {
-            int intoAlphabet = countAlphabet[i];
 
-            if (max < intoAlphabet) {
-                max = intoAlphabet;
+            int count = countAlphabet[i];
+
+            if (count==0)
+                continue;
+
+            if (max == count)
+                isMaxAlone = false;
+
+            if (max < count) {
+                max = count;
                 isMaxAlone = true;
                 maxAlphabetNumber = i;
             }
 
-            if (max == intoAlphabet)
-                isMaxAlone = false;
-
         }
 
         if (isMaxAlone) {
-            char c= Character.forDigit(maxAlphabetNumber, 10);
-            char output = c;
-            System.out.println();
+            char charMax = (char) (maxAlphabetNumber + 'A');
+            System.out.println(charMax);
         } else {
             System.out.println("?");
         }
+
+
 
     }
 
     public static int[] createAlphabetArray (String inputString){
 
         int[] countAlphabet = new int['z'-'a'+1];
+
+        for ( int count=0; count<('z'-'a'+1); count++) {
+            countAlphabet[count] = 0;
+        }
+
         int stringLength = inputString.length();
+        int isa = 'a';
+        int isA = 'A';
 
         for (int count=0; count<stringLength; count++) {
-            char stringToChar = inputString.charAt(count);
-            int charToInt = stringToChar;
+            int charToInt = inputString.charAt(count);
+            int position = 0;
 
             if (97 <= charToInt)
-                charToInt = charToInt-'a';
+                position = charToInt-isa;
 
             if (charToInt < 97)
-                charToInt = charToInt - 'A';
+                position = charToInt-isA;
 
-            countAlphabet[charToInt] += 1;
+            countAlphabet[position] = countAlphabet[position] + 1;
         }
 
         return countAlphabet;
 
     }
+
+
 }
