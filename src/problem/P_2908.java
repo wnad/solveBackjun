@@ -49,7 +49,7 @@ public class P_2908 implements Problem {
         String outputNumber = "";
 
         for (int i=2; 0<=i; i--) {
-            outputNumber += String.valueOf(inputNumber.charAt(i));
+            outputNumber = outputNumber + String.valueOf(inputNumber.charAt(i));
         }
 
         return outputNumber;
