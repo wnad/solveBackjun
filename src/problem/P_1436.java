@@ -35,17 +35,66 @@ public class P_1436 implements Problem {
 
         int N = Integer.parseInt(bufferedReader.readLine());
 
-        int number = 665;
-        int count = 0;
+        int number  = 665;
+        int count   = 0;
+
+        /*
+        int boundmin = 0;
+        int digit = 3;
+
+        int[] allnumber     = {0,1,2,3,4,5,6,7,8,9};
+        int[] ninenumber    = {0,1,2,3,4,5,7,8,9};
+        int[] eightnumber   = {1,2,3,4,5,7,8,9};
+
+        while (boundmin < N) {
+            int a = (digit-3) > 0 ?    1    : 0;
+            int b = (digit-3) > 1 ? digit-4 : 0;
+            int c = 0;
+
+            for (int i=0; i<digit-2; i++) {
+
+
+                for (int aaa=0; aaa<digit-3; aaa++) {
+                    int num = 0;
+                    if (a==1){
+                        for (int eight=0; eight<8; eight++) {
+
+                        }
+                    }
+
+                }
+
+                double cal = Math.pow(8, a) * Math.pow(9, b) * Math.pow(10, c);
+                boundmin += cal;
+
+                if (N<boundmin) { break; }
+                if (b==0 && 1==a) a--;
+                if (0<b) b--;
+                c++;
+            }
+
+            digit++;
+
+        }
+
+        System.out.println(digit);
+         */
+
 
         while(count<N) {
             number++;
             String sNumber = String.valueOf(number);
             if(sNumber.contains("666"))
                 count++;
+
         }
 
         System.out.println(number);
 
+
+
     }
+
+
+
 }
