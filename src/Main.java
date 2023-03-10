@@ -6,7 +6,7 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
 
-        Problem p = new P_1018();
+        Problem p = new P_1085();
 
         p.exec();
 
