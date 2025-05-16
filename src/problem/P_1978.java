@@ -52,4 +52,6 @@ public class P_1978 implements Problem{
 
         return true;
     }
+
+
 }

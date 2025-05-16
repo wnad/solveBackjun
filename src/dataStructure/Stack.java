@@ -83,7 +83,7 @@ public class Stack<E> implements StackInterface<E> {
 
     @Override
     public E peek() {
-        // 만약 삭제할 요소가 없다면 Stack이 비어있다는 의미이므로 예외 발생시키기
+
         if(size == 0) {
             throw new EmptyStackException();
         }

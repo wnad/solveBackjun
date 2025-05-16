@@ -1,14 +1,49 @@
 package dataStructure;
 
-public interface Queue<E> {
+import java.util.LinkedList;
+import java.util.Iterator;
 
-    // 큐 마지막에 요소 추가
-    boolean offer(E e);
+public class Queue<E> implements QueueInterface<E>, Iterable<E> {
 
-    // 첫번째 큐 삭제하고 삭제한 요소 반환
-    E poll();
+    private LinkedList<E> list;
 
-    // 첫번째 큐 요소 반환
-    E peek();
+    public Queue() {
+        list = new LinkedList<>();
+    }
 
+    @Override
+    public boolean add(E element) {
+        return list.add(element);
+    }
+
+    @Override
+    public E poll() {
+        if (isEmpty()) {
+            throw new java.util.NoSuchElementException();
+        }
+        return list.removeFirst();
+    }
+
+    @Override
+    public E peek() {
+        if (isEmpty()) {
+            return null;
+        }
+        return list.getFirst();
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return list.isEmpty();
+    }
+
+    @Override
+    public int size() {
+        return list.size();
+    }
+
+    @Override
+    public Iterator<E> iterator() {
+        return list.iterator();
+    }
 }

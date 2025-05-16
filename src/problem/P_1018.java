@@ -1,8 +1,8 @@
 package problem;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.List;
 import java.util.StringTokenizer;
 
 public class P_1018 implements Problem {
@@ -27,117 +27,76 @@ public class P_1018 implements Problem {
     첫째 줄에 지민이가 다시 칠해야 하는 정사각형 개수의 최솟값을 출력한다.
      */
 
+    public static List<String> input = List.of(
+            "8 8\n" + "WBWBWBWB\n" + "BWBWBWBW\n" + "WBWBWBWB\n" + "BWBBBWBW\n" + "WBWBWBWB\n" + "BWBWBWBW\n" + "WBWBWBWB\n" + "BWBWBWBW",
+            "10 13\n" + "BBBBBBBBWBWBW\n" + "BBBBBBBBBWBWB\n" + "BBBBBBBBWBWBW\n" + "BBBBBBBBBWBWB\n" + "BBBBBBBBWBWBW\n" + "BBBBBBBBBWBWB\n" + "BBBBBBBBWBWBW\n" + "BBBBBBBBBWBWB\n" + "WWWWWWWWWWBWB\n" + "WWWWWWWWWWBWB",
+            "8 8\n" + "BWBWBWBW\n" + "WBWBWBWB\n" + "BWBWBWBW\n" + "WBWBWBWB\n" + "BWBWBWBW\n" + "WBWBWBWB\n" + "BWBWBWBW\n" + "WBWBWBWB",
+            "9 23\n" + "BBBBBBBBBBBBBBBBBBBBBBB\n" + "BBBBBBBBBBBBBBBBBBBBBBB\n" + "BBBBBBBBBBBBBBBBBBBBBBB\n" + "BBBBBBBBBBBBBBBBBBBBBBB\n" + "BBBBBBBBBBBBBBBBBBBBBBB\n" + "BBBBBBBBBBBBBBBBBBBBBBB\n" + "BBBBBBBBBBBBBBBBBBBBBBB\n" + "BBBBBBBBBBBBBBBBBBBBBBB\n" + "BBBBBBBBBBBBBBBBBBBBBBW",
+            "10 10\n" + "BBBBBBBBBB\n" + "BBWBWBWBWB\n" + "BWBWBWBWBB\n" + "BBWBWBWBWB\n" + "BWBWBWBWBB\n" + "BBWBWBWBWB\n" + "BWBWBWBWBB\n" + "BBWBWBWBWB\n" + "BWBWBWBWBB\n" + "BBBBBBBBBB",
+            "8 8\n" + "WBWBWBWB\n" + "BWBWBWBW\n" + "WBWBWBWB\n" + "BWBBBWBW\n" + "WBWBWBWB\n" + "BWBWBWBW\n" + "WBWBWWWB\n" + "BWBWBWBW",
+            "11 12\n" + "BWWBWWBWWBWW\n" + "BWWBWBBWWBWW\n" + "WBWWBWBBWWBW\n" + "BWWBWBBWWBWW\n" + "WBWWBWBBWWBW\n" + "BWWBWBBWWBWW\n" + "WBWWBWBBWWBW\n" + "BWWBWBWWWBWW\n" + "WBWWBWBBWWBW\n" + "BWWBWBBWWBWW\n" + "WBWWBWBBWWBW"
+            );
+    public static List<String> output = List.of(
+            "1", "12", "0", "31", "0", "2", "15");
+
     @Override
-    public void exec() throws IOException {
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+    public void exec() throws Exception {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        String inputString = bufferedReader.readLine();
+        StringTokenizer NM = new StringTokenizer(br.readLine());
 
-        StringTokenizer numberTokenizer = new StringTokenizer(inputString);
+        // N x M 크기의 보드
+        int N = Integer.parseInt(NM.nextToken());
+        int M = Integer.parseInt(NM.nextToken());
 
-        int N = Integer.parseInt(numberTokenizer.nextToken());
-        int M = Integer.parseInt(numberTokenizer.nextToken());
+        boolean[][] board = new boolean[N][M];
 
-        int[][] nmBoard = new int[N][M];
+        String readRow;
 
+        // 보드판 칠하기
         for (int row=0; row<N; row++) {
-            String inputBoard = bufferedReader.readLine();
-            for (int column=0; column<M; column++){
-                String color = String.valueOf(inputBoard.charAt(column));
-                nmBoard[row][column] =  (color.equals("B")) ? 0 : 1;
+            readRow = br.readLine();
+            for (int col=0; col<M; col++) {
+                // 흑(false) 백(true)
+                board[row][col] = readRow.charAt(col)=='W';
             }
         }
 
-        minCheck(nmBoard, N, M);
+        // 최소 교환 개수는 최대인 64개(8x8)로 설정
+        int min = 64;
+
+        // 8x8 체크판을 돌면서 계산
+        for (int row=0; row<=N-8; row++) {
+            for (int col=0; col<=M-8; col++) {
+                min = Math.min(min, getCheckerCount(board, row, col));
+            }
+        }
+
+        System.out.print(min);
     }
 
-    public static void minCheck(int[][] originBoard, int N, int M) {
-        int minCheck = N * M;
+    // 시작 좌표에서 8x8 보드 최솟값 반환
+    private static int getCheckerCount(boolean[][] board, int row, int col) {
 
-        for (int wid=0; wid<N-7; wid++) {
-            for (int len=0; len<M-7; len++) {
-                int check = countChecker(originBoard, wid, len);
-                if (check<minCheck) {
-                    minCheck = check;
+        int first = 0, second = 0;
+        boolean isSameStart, color;
+
+        for (int i=row; i<row+8; i++) {
+            for (int j=col; j<col+8; j++) {
+                // (i+j)가 짝수면 첫칸과 동일, 홀수면 첫칸과 반대
+                isSameStart = (i+j)%2 == 0;
+                color = board[i][j];
+
+                // 흑-백 체스판은 서로 반대여서 색 구분없이 계산
+                if (color == isSameStart) {
+                    first++;
+                } else {
+                    second++;
                 }
             }
         }
 
-        System.out.println(minCheck);
-    }
-
-
-    public static int countChecker(int[][] originBoard, int row, int column) {      // 검정, 하양 시작 바꾸는 횟수 비교
-
-        int black = 0;
-        int white = 1;
-
-        int blackstart = colorCounter(originBoard, row, column, black);
-        int whitestart = colorCounter(originBoard, row, column, white);
-
-        return smallerthan(blackstart, whitestart);
-    }
-
-    public static int smallerthan (int numberA, int numberB) {          // 최솟값 구하기
-        int min = 0;
-
-        if (numberA==numberB) {
-            min = numberA;
-        }
-
-        if (numberA < numberB) {
-            min = numberA;
-        }
-
-        if (numberB < numberA) {
-            min = numberB;
-        }
-
-        return min;
-
-
-    }
-
-    public static int colorCounter(int[][] originBoard, int row, int column, int startcolor) {  // 처음 체스판 색깔에 맞게 칠해야하는 개수 세는 함수
-        int start = 0;
-        int cursor = startcolor;
-
-        for (int i=0; i<8; i++) {
-            for (int j=0; j<8; j++) {
-
-                if(i==0 && j==0){
-                    if (originBoard[row+i][column+j] != startcolor) start += 1;
-                    j++;
-                }
-
-                if (originBoard[row+i][column+j] != cursor) {
-                    cursor = reverseCheck(cursor);
-                    continue;
-                }
-
-                if (originBoard[row+i][column+j] == cursor) {
-                    cursor = reverseCheck(cursor);
-                    start += 1;
-                }
-
-            }
-            cursor = reverseCheck(cursor);
-
-        }
-
-        return start;
-
-    }
-
-    public static int reverseCheck(int cursor) {        // 체크 바꾸는 함수
-        int returnCheck = 0;
-
-        if (cursor == 0)
-            returnCheck = 1;
-
-        if (cursor == 1)
-            returnCheck = 0;
-
-        return returnCheck;
+        // 둘 중 작은 값 반환
+        return Math.min(first, second);
     }
 }
