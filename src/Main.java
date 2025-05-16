@@ -9,28 +9,24 @@ public class Main {
 
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        // 입력 수 N
-        int N = Integer.parseInt(br.readLine());
+        String N = br.readLine();
 
-        // 입력 저장할 배열 선언
-        int[] array = new int[N];
+        int size = N.length();
 
-        for (int i=0; i<N; i++) {
-            array[i] = Integer.parseInt(br.readLine());
+        int[] nums = new int[size];
+
+        for (int i=0; i<size; i++) {
+            // char 니까 (아스키) 숫자로 변환
+            nums[i] = N.charAt(i) - '0';
         }
 
-        // 정렬
-        Arrays.sort(array);
+        Arrays.sort(nums);
 
-
-        // 정렬된 수 출력
         StringBuilder result = new StringBuilder();
 
-        for (int num : array) {
-            result.append(num).append("\n");
+        for (int i=0; i<size; i++) {
+            result.append(nums[size-i-1]);
         }
-
-        result.deleteCharAt(result.length() - 1);
 
         System.out.print(result);
     }
