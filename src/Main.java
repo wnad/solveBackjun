@@ -1,7 +1,7 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Arrays;
+import java.util.PriorityQueue;
 
 public class Main {
 
@@ -9,24 +9,32 @@ public class Main {
 
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        String N = br.readLine();
-
-        int size = N.length();
-
-        int[] nums = new int[size];
-
-        for (int i=0; i<size; i++) {
-            // char 니까 (아스키) 숫자로 변환
-            nums[i] = N.charAt(i) - '0';
-        }
-
-        Arrays.sort(nums);
+        PriorityQueue<Integer> minHip = new PriorityQueue<>();
 
         StringBuilder result = new StringBuilder();
 
-        for (int i=0; i<size; i++) {
-            result.append(nums[size-i-1]);
+        // 연산 횟수
+        int N = Integer.parseInt(br.readLine());
+
+        // 입력 받는 자연수
+        int num;
+
+        while (N-- > 0) {
+            num = Integer.parseInt(br.readLine());
+
+            // 0이면 출력, 없을 경우 예외처리
+            if (num==0) {
+                if (minHip.isEmpty()) {
+                    result.append(0).append("\n");
+                } else {
+                    result.append(minHip.poll()).append("\n");
+                }
+            } else {
+                minHip.add(num);
+            }
         }
+
+        result.deleteCharAt(result.length() -1);
 
         System.out.print(result);
     }
