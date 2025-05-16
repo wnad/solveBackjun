@@ -1,7 +1,7 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.StringTokenizer;
+import java.util.Arrays;
 
 public class Main {
 
@@ -9,38 +9,29 @@ public class Main {
 
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        StringTokenizer input = new StringTokenizer(br.readLine());
+        // 입력 수 N
+        int N = Integer.parseInt(br.readLine());
 
+        // 입력 저장할 배열 선언
+        int[] array = new int[N];
 
-        // 주어진 숫자
-        int N = Integer.parseInt(input.nextToken());
-
-        // B 진법
-        int B = Integer.parseInt(input.nextToken());
-
-        StringBuilder result = new StringBuilder();
-
-
-        // 1. N이 0이 될때까지 반복
-        while (0<N) {
-
-            // 2. N 을 B로 나누기
-            int remain = N%B;
-
-            // 0~9 사이라면
-            if (remain<10) {
-                result.append(remain);
-            } else {
-                // 10 이상이라면
-                // 10 -> 'A' = 65
-                result.append((char) (remain+55));
-            }
-
-            N/=B;
-
+        for (int i=0; i<N; i++) {
+            array[i] = Integer.parseInt(br.readLine());
         }
 
-        System.out.print(result.reverse());
+        // 정렬
+        Arrays.sort(array);
 
+
+        // 정렬된 수 출력
+        StringBuilder result = new StringBuilder();
+
+        for (int num : array) {
+            result.append(num).append("\n");
+        }
+
+        result.deleteCharAt(result.length() - 1);
+
+        System.out.print(result);
     }
 }
