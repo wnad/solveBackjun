@@ -1,7 +1,8 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.PriorityQueue;
+import java.util.Arrays;
+import java.util.StringTokenizer;
 
 public class Main {
 
@@ -9,33 +10,59 @@ public class Main {
 
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        PriorityQueue<Integer> minHip = new PriorityQueue<>();
+        int N = Integer.parseInt(br.readLine());
+        int[] A = new int[N];
+
+        StringTokenizer a = new StringTokenizer(br.readLine());
+
+        for (int i=0; i<N; i++) {
+            A[i] = Integer.parseInt(a.nextToken());
+        }
+
+        // 정렬
+        Arrays.sort(A);
+
+        int M = Integer.parseInt(br.readLine());
+        int [] X = new int[M];
+
+        StringTokenizer x = new StringTokenizer(br.readLine());
+
+        for (int i=0; i<M; i++) {
+            X[i] = Integer.parseInt(x.nextToken());
+        }
 
         StringBuilder result = new StringBuilder();
 
-        // 연산 횟수
-        int N = Integer.parseInt(br.readLine());
+        for (int num : X) {
+            result.append(binarySearch(A, num) ? "1" : "0").append("\n");
+        }
 
-        // 입력 받는 자연수
-        int num;
+        result.deleteCharAt(result.length()-1);
 
-        while (N-- > 0) {
-            num = Integer.parseInt(br.readLine());
+        System.out.print(result);
+    }
 
-            // 0이면 출력, 없을 경우 예외처리
-            if (num==0) {
-                if (minHip.isEmpty()) {
-                    result.append(0).append("\n");
-                } else {
-                    result.append(minHip.poll()).append("\n");
-                }
+    public static boolean binarySearch(int[] sortedArray, int target) {
+
+        int start = 0;
+        int end = sortedArray.length-1;
+
+        int mid;
+
+        while (start<=end) {
+            mid = (start + end)/2;
+
+            if (sortedArray[mid] == target) {
+                return true;
             } else {
-                minHip.add(num);
+                if (sortedArray[mid]<target) {
+                    start = mid+1;
+                } else {
+                    end = mid-1;
+                }
             }
         }
 
-        result.deleteCharAt(result.length() -1);
-
-        System.out.print(result);
+        return false;
     }
 }
