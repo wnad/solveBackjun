@@ -2,7 +2,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Arrays;
-import java.util.StringTokenizer;
 
 public class Main {
 
@@ -10,59 +9,47 @@ public class Main {
 
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        int N = Integer.parseInt(br.readLine());
-        int[] A = new int[N];
+        StringBuilder output = new StringBuilder();
 
-        StringTokenizer a = new StringTokenizer(br.readLine());
+        while (true) {
+            String[] input = br.readLine().split(" ");
+            int a = Integer.parseInt(input[0]);
+            int b = Integer.parseInt(input[1]);
+            int c = Integer.parseInt(input[2]);
 
-        for (int i=0; i<N; i++) {
-            A[i] = Integer.parseInt(a.nextToken());
+            if (a == 0 && b == 0 && c == 0) {
+                break;
+            }
+
+            output.append(isTriangle(a, b, c)).append("\n");
         }
 
-        // 정렬
-        Arrays.sort(A);
+        output.deleteCharAt(output.length() - 1);
 
-        int M = Integer.parseInt(br.readLine());
-        int [] X = new int[M];
-
-        StringTokenizer x = new StringTokenizer(br.readLine());
-
-        for (int i=0; i<M; i++) {
-            X[i] = Integer.parseInt(x.nextToken());
-        }
-
-        StringBuilder result = new StringBuilder();
-
-        for (int num : X) {
-            result.append(binarySearch(A, num) ? "1" : "0").append("\n");
-        }
-
-        result.deleteCharAt(result.length()-1);
-
-        System.out.print(result);
+        System.out.print(output);
     }
 
-    public static boolean binarySearch(int[] sortedArray, int target) {
+    public static String isTriangle(int a, int b, int c) {
 
-        int start = 0;
-        int end = sortedArray.length-1;
+        int[] arr = {a, b, c};
+        Arrays.sort(arr);
 
-        int mid;
-
-        while (start<=end) {
-            mid = (start + end)/2;
-
-            if (sortedArray[mid] == target) {
-                return true;
-            } else {
-                if (sortedArray[mid]<target) {
-                    start = mid+1;
-                } else {
-                    end = mid-1;
-                }
-            }
+        // 삼각형 조건 미부합
+        if (arr[0] + arr[1] <= arr[2]) {
+            return "Invalid";
         }
 
-        return false;
+        // 가장 긴 변 == 가장 작은 변 이면 정삼각형
+        if (arr[0] == arr[2]) {
+            return "Equilateral";
+        }
+
+        // 두변의 길이가 같으면 이등변 삼각형
+        if (arr[0] == arr[1] || arr[1] == arr[2]) {
+            return "Isosceles";
+        }
+
+        // 세변이 다른 삼각형
+        return "Scalene";
     }
 }
