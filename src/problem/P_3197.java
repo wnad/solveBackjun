@@ -25,8 +25,8 @@ public class P_3197 implements Problem {
      *
      *
      * 3. 시간·공간 복잡도
-     *    - 시간 : O(Nlog N)
-     *    - 공간 : O(N)
+     *    - 시간 : O(RC)
+     *    - 공간 : O(RC)
      *
      * 4. 회고
      *    - 처음에는 BFS 탐색을 통해 물공간 탐색후 백조 위치 비교, 얼음 녹이는 BFS 탐색후 반복
