@@ -1,9 +1,72 @@
+package problem;
+
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.*;
 
-public class Main {
+public class P_3197 implements Problem {
+
+
+    /**
+     * Problem 3197: 백조의 호수
+     *
+     * 1. 문제 요약
+     *    - 빙판이 주어진다. 시간이 지날때마다 빙판이 녹는다.
+     *    - 두 백조가 만날 수 있는 시간 계산
+     *    - 입력:
+     *          - R과 C가 주어진다. 단, 1 ≤ R, C ≤ 1500.
+     *          - 다음 R개의 줄에는 각각 길이 C의 문자열이 하나씩 주어진다.
+     *          - '.'은 물 공간, 'X'는 빙판 공간, 'L'은 백조가 있는 공간으로 나타낸다.
+     *    - 출력 : 첫째 줄에 문제에서 주어진 걸리는 날을 출력한다.
+     *
+     * 2. 접근 아이디어
+     *    1) BFS 탐색을 통해 다음날 얼음이 녹는 부분 파악
+     *    2) 얼음이 녹았을 때, 백조가 만날 수 있는 지 판단
+     *
+     *
+     * 3. 시간·공간 복잡도
+     *    - 시간 : O(Nlog N)
+     *    - 공간 : O(N)
+     *
+     * 4. 회고
+     *    - 처음에는 BFS 탐색을 통해 물공간 탐색후 백조 위치 비교, 얼음 녹이는 BFS 탐색후 반복
+     *    - 이런 식으로 해결했는데 타임아웃이 발생했다.
+     *    - 한번 탐색할때, 다음에 갈 수 있는 얼음을 큐에 저장후, 저장된 큐부터 탐색을 하면 전체 탐색을 하지 않아도 되서 효율적이다.
+     *    - 탐색을 할때, 탐색의 범위를 줄여보는 생각을 가져보자.
+     */
+
+    public static List<String> input = List.of(
+            "10 2\n" +
+                    ".L\n" +
+                    "..\n" +
+                    "XX\n" +
+                    "XX\n" +
+                    "XX\n" +
+                    "XX\n" +
+                    "XX\n" +
+                    "XX\n" +
+                    "..\n" +
+                    ".L",
+            "4 11\n" +
+                    "..XXX...X..\n" +
+                    ".X.XXX...L.\n" +
+                    "....XXX..X.\n" +
+                    "X.L..XXX...",
+            "8 17\n" +
+                    "...XXXXXX..XX.XXX\n" +
+                    "....XXXXXXXXX.XXX\n" +
+                    "...XXXXXXXXXXXX..\n" +
+                    "..XXXXX.LXXXXXX..\n" +
+                    ".XXXXXX..XXXXXX..\n" +
+                    "XXXXXXX...XXXX...\n" +
+                    "..XXXXX...XXX....\n" +
+                    "....XXXXX.XXXL..."
+    );
+
+    public static List<String> output = List.of(
+        "3",
+            "2", "2"
+    );
 
     static int R, C;
 
@@ -28,7 +91,9 @@ public class Main {
     static boolean[][] waterVisited;
     static boolean[][] swanVisited;
 
-    public static void main(String[] args) throws IOException {
+
+    @Override
+    public void exec() throws Exception {
 
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
@@ -59,6 +124,8 @@ public class Main {
             }
         }
 
+        br.close();
+
         swan1 = swans.get(0);
         swan2 = swans.get(1);
 
@@ -77,7 +144,6 @@ public class Main {
         }
 
         System.out.print(days);
-
     }
 
     static boolean moveSwan() {
