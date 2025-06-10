@@ -1,13 +1,46 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+package problem;
 
-public class Main {
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.List;
+
+public class P_11401 implements Problem {
+
+    /**
+     * Problem 11401: 이힝 계수 3
+     *
+     * 1. 문제 요약
+     *    - 자연수 N 과 정수 K 가 주어졌을 때, 이항 계수 (NK) 를 1,000,000,007로 나눈 나머지를 구하는 프로그램을 작성하시오.
+     *    - NCK = N! / ((N-K)!k!)
+     *    - NCk mod 1,000,000,007 ?
+     *
+     * 2. 접근 아이디어
+     *    1) 팩토리얼 계산 후 나머지 계산 (수가 너무 커져서 포기)
+     *    2) 모듈러 연산을 활용
+     *    3) 지수 분할 방법 활용
+     *
+     * 3. 시간·공간 복잡도
+     *    - 시간 : O(N)
+     *    - 공간 : O(N)
+     *
+     * 4. 회고
+     *    - 이항 계수와 모듈러 연산을 오랜만에 들어서 문제에 적용하기 어려웠다.
+     *    - 현재 문제와 같이 큰 수에 대한 연산을 할 때에는 지수에 분할을 적용해서 작은 수부터 계산하는 방식을 적용해야겠다.
+     */
+
+    public static List<String> input = List.of(
+            "5 2"
+    );
+
+    public static List<String> output = List.of(
+            "10"
+    );
 
     static final int P = 1000000007;
     static long[] factorials;
 
-    public static void main(String[] args) throws IOException {
+    @Override
+    public void exec() throws Exception {
 
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
@@ -35,6 +68,7 @@ public class Main {
         System.out.print(number * inverseDenom % P);
 
     }
+
     // base^expo % P
     // 역원 구하기
     static long inverse(long base, long expo) {
