@@ -1,60 +1,96 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.StringTokenizer;
 
 public class Main {
 
-    static final int P = 1000000007;
-    static long[] factorials;
+    static int[][] base;
+
+    static int N, M;
 
     public static void main(String[] args) throws IOException {
 
+
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        String[] str = br.readLine().split(" ");
+        StringTokenizer nm = new StringTokenizer(br.readLine());
 
-        int N = Integer.parseInt(str[0]);
-        int K = Integer.parseInt(str[1]);
+        // 행렬의 크기
+        N = Integer.parseInt(nm.nextToken());
 
-        factorials = new long[N+1];
+        // 행렬의 M 제곱
+        M = Integer.parseInt(nm.nextToken());
 
-        factorials[0] = 1;
-        for (int i=1; i<=N; i++) {
-            factorials[i] = factorials[i-1]*i % P;
+        base = new int[N][N];
+
+        for (int i=0; i<N; i++) {
+            StringTokenizer str = new StringTokenizer(br.readLine());
+            for (int j=0; j<N; j++) {
+                base[i][j] = Integer.parseInt(str.nextToken())%1000;
+            }
         }
 
-        // 분자 N!
-        long number = factorials[N];
+        br.close();
 
-        // 분모 (N-K)!K! mod P
-        long denom = factorials[K]*factorials[N-K]%P;
+        int[][] result = powMatrix(M);
 
-        // 분모의 역원
-        long inverseDenom = inverse(denom, P-2)%P;
+        StringBuilder sb = new StringBuilder();
 
-        System.out.print(number * inverseDenom % P);
+        for (int i=0; i<N; i++) {
+            for (int j=0; j<N; j++) {
+
+                sb.append(result[i][j]);
+                if (j < N - 1) sb.append(' ');
+            }
+            if (i < N - 1) sb.append('\n');
+        }
+
+        System.out.print(sb);
 
     }
-    // base^expo % P
-    // 역원 구하기
-    static long inverse(long base, long expo) {
+    // 행렬 제곱 함수
+    static int[][] powMatrix(int expo) {
 
-        // expo 가 1일 경우 바로 base % P 계산
-        if (expo == 1) {
-            return base % P;
+        int[][] result;
+
+        // 지수가 1인 경우 base 를 반환
+        if (expo==1) {
+            return base;
         }
 
-        // expo 절반에 해당하는 A^(expo/2) 를 구하기
-        long temp = inverse(base, expo/2);
+        // 제곱을 절반으로 나누기
+        int[][] temp = powMatrix(expo/2);
 
+        result = multipleMatrix(temp, temp);
 
-        // expo 가 홀수일 경우 base 를 한번 더 곱해줘야한다.
-        // base^5 = base^2 * base^2 * base
-        if (expo%2 == 1) {
-            // base^expo%P * base%P
-            return (temp*temp%P) * base%P;
+        // 지수가 2의 배수가 아니라면
+        if (expo%2==1) {
+            result = multipleMatrix(result, base);
         }
 
-        return temp*temp % P;
+        return result;
+    }
+
+
+    // 행렬 곱셈 함수
+    static int[][] multipleMatrix(int[][] M1, int[][] M2) {
+
+        int[][] M3 = new int[N][N];
+
+        // M3[i][j]
+        for (int i=0; i< N; i++) {
+            for (int j=0; j<N; j++) {
+
+                for (int k=0; k<N; k++) {
+
+                    // M3[i][j]
+                    M3[i][j] += M1[i][k]*M2[k][j];
+                    M3[i][j] %= 1000;
+                }
+            }
+        }
+
+        return M3;
     }
 }

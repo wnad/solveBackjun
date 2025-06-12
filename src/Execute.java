@@ -7,7 +7,7 @@ import java.util.List;
 
 public class Execute {
 
-    public static final String PROBLEM_CLASS_NAME = "P_11401";
+    public static final String PROBLEM_CLASS_NAME = "P_10830";
 
     public static void main(String[] args) throws Exception {
 
