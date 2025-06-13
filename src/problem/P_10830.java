@@ -68,7 +68,10 @@ public class P_10830 implements Problem {
 
     static int[][] base;
 
-    static int N, M;
+    static int N;
+
+    // B의 범위가 1 ≤ B ≤ 100,000,000,000 이므로 Long 타입 선언
+    static long B;
 
     @Override
     public void exec() throws Exception {
@@ -81,7 +84,7 @@ public class P_10830 implements Problem {
         N = Integer.parseInt(nm.nextToken());
 
         // 행렬의 M 제곱
-        M = Integer.parseInt(nm.nextToken());
+        B = Long.parseLong(nm.nextToken());
 
         base = new int[N][N];
 
@@ -96,7 +99,7 @@ public class P_10830 implements Problem {
 
         br.close();
 
-        int[][] result = powMatrix(M);
+        int[][] result = powMatrix(B);
 
         StringBuilder sb = new StringBuilder();
 
@@ -117,12 +120,12 @@ public class P_10830 implements Problem {
     }
 
     // 행렬 제곱 함수
-    static int[][] powMatrix(int expo) {
+    static int[][] powMatrix(long expo) {
 
         int[][] result;
 
         // 지수가 1인 경우 base 를 반환
-        if (expo==1) {
+        if (expo==1L) {
             return base;
         }
 
@@ -132,7 +135,7 @@ public class P_10830 implements Problem {
         result = multipleMatrix(temp, temp);
 
         // 지수가 2의 배수가 아니라면
-        if (expo%2==1) {
+        if (expo%2==1L) {
             result = multipleMatrix(result, base);
         }
 
